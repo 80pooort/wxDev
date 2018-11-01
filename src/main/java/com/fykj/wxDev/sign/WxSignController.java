@@ -1,6 +1,8 @@
 package com.fykj.wxDev.sign;
 
+import com.fykj.wxDev.Functory.CreateMsgFunctory;
 import com.fykj.wxDev.util.WxUtil;
+import com.fykj.wxDev.vo.CommentMessage;
 import com.fykj.wxDev.vo.WXBaseParams;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +32,17 @@ public class WxSignController {
             } else {
                 System.out.println("签名校验失败.");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping("/test")
+    public void testFactory(){
+        try {
+            CreateMsgFunctory createMsgFunctory = new CreateMsgFunctory();
+            CommentMessage msg = createMsgFunctory.createMsg("IMAGE");
+            msg.runFun();
         } catch (Exception e) {
             e.printStackTrace();
         }
