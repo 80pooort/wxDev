@@ -1,13 +1,20 @@
 package com.fykj.wxDev.util;
 
+import javax.net.ssl.*;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Arrays;
 
 public class WxUtil {
-
     /**
      * 排序
+     *
      * @param strArry
      * @return
      */
@@ -44,4 +51,68 @@ public class WxUtil {
         }
         return "";
     }
+
+    public static String getHttpsResponse(String reqUrl, String requestMethod) {
+        URL url;
+        InputStream is;
+        StringBuffer resultData = new StringBuffer();
+        X509TrustManager xtm = new X509TrustManager() {
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+                return null;
+            }
+
+            @Override
+            public void checkServerTrusted(X509Certificate[] arg0, String arg1)
+                    throws CertificateException {
+
+            }
+
+            @Override
+            public void checkClientTrusted(X509Certificate[] arg0, String arg1)
+                    throws CertificateException {
+
+            }
+
+        };
+        try {
+            url = new URL(reqUrl);
+            HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+            TrustManager[] tm = {xtm};
+
+            SSLContext ctx = SSLContext.getInstance("TLS");
+            ctx.init(null, tm, null);
+
+            con.setSSLSocketFactory(ctx.getSocketFactory());
+            con.setHostnameVerifier(new HostnameVerifier() {
+                @Override
+                public boolean verify(String arg0, SSLSession arg1) {
+                    return true;
+                }
+            });
+
+            con.setDoInput(true); //允许输入流，即允许下载
+
+            //在android中必须将此项设置为false
+            con.setDoOutput(false); //允许输出流，即允许上传
+            con.setUseCaches(false); //不使用缓冲
+            if (null != requestMethod && !requestMethod.equals("")) {
+                con.setRequestMethod(requestMethod); //使用指定的方式
+            } else {
+                con.setRequestMethod("GET"); //使用get请求
+            }
+            is = con.getInputStream();   //获取输入流，此时才真正建立链接
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader bufferReader = new BufferedReader(isr);
+            String inputLine;
+            while ((inputLine = bufferReader.readLine()) != null) {
+                resultData.append(inputLine).append("\n");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultData.toString();
+    }
+
+
 }
