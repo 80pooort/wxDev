@@ -1,5 +1,8 @@
 package com.fykj.wxDev.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.net.ssl.*;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -12,6 +15,8 @@ import java.security.cert.X509Certificate;
 import java.util.Arrays;
 
 public class WxUtil {
+
+    private static final Logger logger = LoggerFactory.getLogger(WxUtil.class);
     /**
      * 排序
      *
@@ -47,7 +52,7 @@ public class WxUtil {
             }
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+           logger.error("WxUtil sha1 加密异常：",e);
         }
         return "";
     }
@@ -109,7 +114,7 @@ public class WxUtil {
                 resultData.append(inputLine).append("\n");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("WxUtil 请求获取token时异常：",e);
         }
         return resultData.toString();
     }

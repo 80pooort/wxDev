@@ -1,6 +1,16 @@
 server:
   port: 8080
 
+logging:
+  config: classpath:logback/logback-dev.xml
+
+  pattern:
+    console: '%d %-5level %logger{32} - %msg%n'
+
+  level:
+    org.springframwork.web: INFO
+    com.fykj: DEBUG
+
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource

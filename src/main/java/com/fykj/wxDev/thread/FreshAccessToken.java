@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.fykj.wxDev.util.WxUtil;
 import com.fykj.wxDev.vo.AccessToken;
 import com.fykj.wxDev.vo.AccessTokenInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class FreshAccessToken implements ApplicationRunner {
+    private static Logger logger = LoggerFactory.getLogger(FreshAccessToken.class);
 
     @Value("${wx.appId}")
     private String appId;

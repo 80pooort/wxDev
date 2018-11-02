@@ -75,5 +75,6 @@ dependencies {
 	compile 'net.coobird:thumbnailator:0.4.8'
 	compile 'ch.qos.logback:logback-classic:1.1.11'
 	compile 'ch.qos.logback:logback-core:1.1.11'
+	compile 'org.springframework.boot:spring-boot-starter-quartz'
 	compile group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: '2.1.9'
 }
