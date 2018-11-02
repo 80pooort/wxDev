@@ -1,6 +1,6 @@
 package com.fykj.wxDev.sign;
 
-import com.fykj.wxDev.Functory.CreateMsgFunctory;
+import com.fykj.wxDev.factory.CreateMsgFactory;
 import com.fykj.wxDev.util.WxUtil;
 import com.fykj.wxDev.vo.CommentMessage;
 import com.fykj.wxDev.vo.WXBaseParams;
@@ -40,7 +40,7 @@ public class WxSignController {
     @RequestMapping("/test")
     public void testFactory(){
         try {
-            CreateMsgFunctory createMsgFunctory = new CreateMsgFunctory();
+            CreateMsgFactory createMsgFunctory = new CreateMsgFactory();
             CommentMessage msg = createMsgFunctory.createMsg("IMAGE");
             msg.runFun();
         } catch (Exception e) {
