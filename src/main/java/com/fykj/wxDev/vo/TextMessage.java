@@ -1,13 +1,23 @@
 package com.fykj.wxDev.vo;
 
+
+import com.fykj.wxDev.enumPackage.MsgTypeEnum;
+
 /**
  * 文本消息类
  * @Author: wujian
  * @Date: 2018/11/1 21:31
  */
 public class TextMessage extends CommentMessage {
+
+    private String Content;
+
+    public TextMessage(){
+        this.MsgType= MsgTypeEnum.TEXT.name();
+    }
+
     @Override
-    public void runFun(){
-        System.out.println("这是文本类消息");
+    public void replyMsg(){
+       return "您发送的是文本消息";
     }
 }

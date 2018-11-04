@@ -1,24 +1,28 @@
-package com.fykj.wxDev.sign;
+package com.fykj.wxDev.web;
 
-import com.fykj.wxDev.factory.CreateMsgFactory;
 import com.fykj.wxDev.util.WxUtil;
-import com.fykj.wxDev.vo.CommentMessage;
 import com.fykj.wxDev.vo.WXBaseParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 
 @RestController
 public class WxSignController {
 
+    private final Logger logger = LoggerFactory.getLogger(WxSignController.class);
+
     @Value("${wx.token}")
     private String wxToken;
 
-    @RequestMapping("/wxSign")
-    public void wxSign(HttpServletResponse response, HttpServletRequest request, WXBaseParams wxBaseParams) {
+    @RequestMapping(name = "wxSign", method = RequestMethod.GET)
+    public void wxDoor(HttpServletResponse response, HttpServletRequest request, WXBaseParams wxBaseParams) {
         try {
             System.out.println("开始校验签名");
             //排序
@@ -37,14 +41,19 @@ public class WxSignController {
         }
     }
 
-    @RequestMapping("/test")
-    public void testFactory(){
+    @RequestMapping(name = "wxSign", method = RequestMethod.POST)
+    public void wxDoor(HttpServletRequest request, HttpServletResponse response) {
+        PrintWriter out = null;
+        String respXml = "";
         try {
-            CreateMsgFactory createMsgFunctory = new CreateMsgFactory();
-            CommentMessage msg = createMsgFunctory.createMsg("IMAGE");
-            msg.runFun();
+            request.setCharacterEncoding("UTF-8");
+            response.setCharacterEncoding("UTF-8");
+            out = response.getWriter();
         } catch (Exception e) {
-            e.printStackTrace();
+
+        } finally {
+            out.print(respXml);
+            out.close();
         }
     }
 }

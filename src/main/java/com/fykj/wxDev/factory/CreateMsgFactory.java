@@ -1,7 +1,15 @@
 package com.fykj.wxDev.factory;
 
-import com.fykj.wxDev.MsgTypeEnum;
+import com.fykj.wxDev.enumPackage.MsgTypeEnum;
+import com.fykj.wxDev.enumPackage.SelfExceptionEnum;
+import com.fykj.wxDev.exception.SelfException;
 import com.fykj.wxDev.vo.CommentMessage;
+import com.fykj.wxDev.vo.ImageMessage;
+import com.fykj.wxDev.vo.TextMessage;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Map;
+
 
 /**
  * @Author: wujian
@@ -10,9 +18,19 @@ import com.fykj.wxDev.vo.CommentMessage;
 public class CreateMsgFactory {
 
     //根据传入类型生产对应实例
-    public  CommentMessage createMsg(String typeName) throws Exception{
-        Class<?> msgClass = Class.forName(MsgTypeEnum.valueOf(typeName).getFunName());
-        CommentMessage msg = (CommentMessage) msgClass.newInstance();
-        return  msg;
+    public CommentMessage createMsg(String typeName) throws Exception {
+        if (StringUtils.isEmpty(typeName)) {
+            throw new SelfException(SelfExceptionEnum.INVALIDPARAM.name());
+        }
+
+        if (StringUtils.equals(MsgTypeEnum.TEXT.name(), typeName)) {
+            return new TextMessage();
+        }
+
+        if (StringUtils.equals(MsgTypeEnum.IMAGE.name(), typeName)) {
+            return new ImageMessage();
+        }
+        return null;
+
     }
 }

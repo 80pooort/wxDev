@@ -16,7 +16,7 @@ public class StartQuartzJob {
             public void run() {
                 boolean flag = true;
                 while (flag){
-                    QuartzManager.addJob("quartzJobTemplate", QuartzJobTemplate.class," 0 0/1 * * * ? ");
+                    QuartzManager.addJob("quartzJobTemplate", QuartzJobTemplate.class," 0 0/5 * * * ? ");
                     flag = false;
                 }
             }

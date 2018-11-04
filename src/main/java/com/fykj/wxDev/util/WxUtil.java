@@ -1,22 +1,62 @@
 package com.fykj.wxDev.util;
 
+import com.fykj.wxDev.vo.CommentMessage;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.core.util.QuickWriter;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
+import com.thoughtworks.xstream.io.xml.XppDriver;
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.*;
+import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Writer;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class WxUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(WxUtil.class);
+
+    private static XStream xstream = new XStream(new XppDriver() {
+        public HierarchicalStreamWriter createWriter(Writer out) {
+            return new PrettyPrintWriter(out) {
+                // 对所有xml节点的转换都增加CDATA标记
+                boolean cdata = true;
+
+                @SuppressWarnings("unchecked")
+                public void startNode(String name, Class clazz) {
+                    super.startNode(name, clazz);
+                }
+
+                protected void writeText(QuickWriter writer, String text) {
+                    if (cdata) {
+                        writer.write("<![CDATA[");
+                        writer.write(text);
+                        writer.write("]]>");
+                    } else {
+                        writer.write(text);
+                    }
+                }
+            };
+        }
+    });
+
+
     /**
      * 排序
      *
@@ -52,7 +92,7 @@ public class WxUtil {
             }
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
-           logger.error("WxUtil sha1 加密异常：",e);
+            logger.error("WxUtil sha1 加密异常：", e);
         }
         return "";
     }
@@ -114,10 +154,50 @@ public class WxUtil {
                 resultData.append(inputLine).append("\n");
             }
         } catch (Exception e) {
-            logger.error("WxUtil 请求获取token时异常：",e);
+            logger.error("WxUtil 请求获取token时异常：", e);
         }
         return resultData.toString();
     }
 
+    /**
+     * 将xml解析为map工具类
+     *
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public static Map<String, String> parseXml(HttpServletRequest request) throws Exception {
+        Map<String, String> map = new HashMap<String, String>();
+
+        // 从request中取得输入流
+        InputStream inputStream = request.getInputStream();
+        // 读取输入流
+        SAXReader reader = new SAXReader();
+        Document document = reader.read(inputStream);
+        // 得到xml根元素
+        Element root = document.getRootElement();
+        // 得到根元素的所有子节点
+        List<Element> elementList = root.elements();
+
+        // 遍历所有子节点
+        for (Element e : elementList)
+            map.put(e.getName(), e.getText());
+
+        // 释放资源
+        inputStream.close();
+
+        return map;
+    }
+
+    /**
+     * 将回复的消息转成xml格式
+     * @param message
+     * @return
+     */
+    public static String messageToXml(CommentMessage message) {
+        xstream.alias("xml", message.getClass());
+        return xstream.toXML(message);
+    }
 
 }
