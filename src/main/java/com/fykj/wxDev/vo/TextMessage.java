@@ -18,6 +18,5 @@ public class TextMessage extends CommentMessage {
 
     @Override
     public void replyMsg(){
-       return "您发送的是文本消息";
     }
 }
