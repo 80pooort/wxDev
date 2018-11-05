@@ -1,9 +1,11 @@
 package com.fykj.wxDev.web;
 
+import com.fykj.wxDev.interfaces.WxSignServer;
 import com.fykj.wxDev.util.WxUtil;
 import com.fykj.wxDev.vo.WXBaseParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +23,9 @@ public class WxSignController {
     @Value("${wx.token}")
     private String wxToken;
 
+    @Autowired
+    private WxSignServer wxSignServer;
+
     @RequestMapping(name = "wxSign", method = RequestMethod.GET)
     public void wxDoor(HttpServletResponse response, HttpServletRequest request, WXBaseParams wxBaseParams) {
         try {
@@ -33,6 +38,8 @@ public class WxSignController {
             if (mySignature != null && mySignature != "" && mySignature.equals(wxBaseParams.getSignature())) {
                 System.out.println("签名校验通过。");
                 response.getWriter().write(wxBaseParams.getEchostr());
+                System.out.println("初始化菜单");
+
             } else {
                 System.out.println("签名校验失败.");
             }
@@ -49,11 +56,12 @@ public class WxSignController {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
             out = response.getWriter();
+            respXml = wxSignServer.processRequest(request);
         } catch (Exception e) {
-
-        } finally {
-            out.print(respXml);
-            out.close();
+            logger.error("响应用户信息异常", e);
         }
+        out.print(respXml);
+        out.close();
+
     }
 }

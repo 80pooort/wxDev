@@ -12,7 +12,7 @@ public class CommentMessage {
     Long CreateTime;
     String MsgType;
 
-    public void replyMsg() {
+    public void replyMsg(String msg) {
     }
 
     public String getToUserName() {

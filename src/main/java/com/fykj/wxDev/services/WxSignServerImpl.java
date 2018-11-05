@@ -29,15 +29,16 @@ public class WxSignServerImpl implements WxSignServer {
         String toUserName = requestMap.get("ToUserName");
         // 消息类型
         String msgType = requestMap.get("MsgType");
-        if (MsgTypeEnum.isIegalType(msgType)) {
-            respMsg = "未知的消息类型";
-        }
         CreateMsgFactory createMsgFactory = new CreateMsgFactory();
-        CommentMessage msgObj = createMsgFactory.createMsg(msgType);
+        CommentMessage msgObj = createMsgFactory.createMsg(MsgTypeEnum.TEXT.name());
         msgObj.setCreateTime(new Date().getTime());
         msgObj.setFromUserName(toUserName);
         msgObj.setToUserName(fromUserName);
-        msgObj.replyMsg();
+        if (!MsgTypeEnum.isIegalType(msgType)) {
+            respMsg = "未知的消息类型";
+        }
+        msgObj.replyMsg(respMsg);
+        respXml = WxUtil.messageToXml(msgObj);
         return respXml;
     }
 }

@@ -13,7 +13,7 @@ public class ImageMessage extends CommentMessage {
     }
 
     @Override
-    public void replyMsg() {
+    public void replyMsg(String msg) {
 
     }
 }

@@ -2,6 +2,7 @@ package com.fykj.wxDev.vo;
 
 
 import com.fykj.wxDev.enumPackage.MsgTypeEnum;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 文本消息类
@@ -17,6 +18,10 @@ public class TextMessage extends CommentMessage {
     }
 
     @Override
-    public void replyMsg(){
+    public void replyMsg(String msg){
+        this.Content = "请联系客服";
+        if (StringUtils.isNotBlank(msg)) {
+            this.Content = msg;
+        }
     }
 }

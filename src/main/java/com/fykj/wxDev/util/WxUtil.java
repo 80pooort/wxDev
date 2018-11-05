@@ -6,6 +6,7 @@ import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.XppDriver;
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -14,10 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.*;
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Writer;
+import java.io.*;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -97,7 +95,7 @@ public class WxUtil {
         return "";
     }
 
-    public static String getHttpsResponse(String reqUrl, String requestMethod) {
+    public static String getHttpsResponse(String reqUrl, String requestMethod,String outputString) {
         URL url;
         InputStream is;
         StringBuffer resultData = new StringBuffer();
@@ -146,6 +144,14 @@ public class WxUtil {
             } else {
                 con.setRequestMethod("GET"); //使用get请求
             }
+            // 当有数据需要提交时
+            if (StringUtils.isNotBlank(outputString)) {
+                OutputStream outputStream = con.getOutputStream();
+                // 注意编码格式，防止中文乱码
+                outputStream.write(outputString.getBytes("UTF-8"));
+                outputStream.close();
+            }
+
             is = con.getInputStream();   //获取输入流，此时才真正建立链接
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader bufferReader = new BufferedReader(isr);

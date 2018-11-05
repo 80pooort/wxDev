@@ -57,7 +57,7 @@ public class FreshAccessToken implements ApplicationRunner {
 
     public AccessToken getAccessToken() {
         String Url = String.format(accessTokenUrl, appId, appSecret);
-        String result = WxUtil.getHttpsResponse(Url, "");
+        String result = WxUtil.getHttpsResponse(Url,"GET",null);
         System.out.println("刷新获取到的access_token=" + result);
         JSONObject json = JSON.parseObject(result);
         AccessToken token = new AccessToken();
