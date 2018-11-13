@@ -47,6 +47,9 @@ spring:
         min-idle: 0
     timeout: 1000
 
+mybatis:
+  mapperLocations: classpath:mapper/mapper-*.xml
+  typeAliasesPackage: com.fykj.wxDev.pojo
 
 
 wx:

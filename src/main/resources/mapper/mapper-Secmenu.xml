@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fykj.wxDev.dao.SecmenuDao">
+<resultMap id="BaseResultMap" type="com.fykj.wxDev.pojo.Secmenu" >
+	<id column="id" property="id" jdbcType="INTEGER" />
+	<result column="name" property="name" jdbcType="VARCHAR" />
+	<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+</resultMap>
+<sql id="Base_Column_List" >
+	id,
+	`name`,
+	parent_id
+</sql>
+<sql id="base_where" >
+	<where>
+		1=1
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="name != null and name != ''">
+			and `name` = #{name}
+		</if>
+		<if test="parentId != null">
+			and parent_id = #{parentId}
+		</if>
+	</where>
+</sql>
+<select id="selectOne" resultMap="BaseResultMap" parameterType="map">
+	select		<include refid="Base_Column_List" />
+	from wx_sec_menu
+	<include refid="base_where"/>
+	 limit 1
+</select>
+
+<select id="select" resultMap="BaseResultMap" parameterType="map">
+	select		<include refid="Base_Column_List" />
+	from wx_sec_menu
+	<include refid="base_where"/>
+</select>
+
+<insert id="insert" parameterType="com.fykj.wxDev.pojo.Secmenu">
+	insert into wx_sec_menu
+	(
+	id,
+	`name`,
+	parent_id
+	)
+	values (
+	#{id},
+	#{name},
+	#{parentId}
+	)
+</insert>
+
+</mapper>

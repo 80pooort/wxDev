@@ -27,32 +27,32 @@ public class FreshAccessToken implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        AccessTokenInfo.accessToken = getAccessToken();
-                        if (AccessTokenInfo.accessToken != null) {
-                            //获取到access_token 休眠7000秒,大约2个小时左右
-                            Thread.sleep(7000 * 1000);
-                        } else {
-                            //获取的access_token为空 休眠3秒
-                            Thread.sleep(1000 * 3);
-                        }
-                    } catch (Exception e) {
-                        System.out.println("发生异常：" + e.getMessage());
-                        e.printStackTrace();
-                        try {
-                            //发生异常休眠1秒
-                            Thread.sleep(1000 * 10);
-                        } catch (Exception e1) {
-
-                        }
-                    }
-                }
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (true) {
+//                    try {
+//                        AccessTokenInfo.accessToken = getAccessToken();
+//                        if (AccessTokenInfo.accessToken != null) {
+//                            //获取到access_token 休眠7000秒,大约2个小时左右
+//                            Thread.sleep(7000 * 1000);
+//                        } else {
+//                            //获取的access_token为空 休眠3秒
+//                            Thread.sleep(1000 * 3);
+//                        }
+//                    } catch (Exception e) {
+//                        System.out.println("发生异常：" + e.getMessage());
+//                        e.printStackTrace();
+//                        try {
+//                            //发生异常休眠1秒
+//                            Thread.sleep(1000 * 10);
+//                        } catch (Exception e1) {
+//
+//                        }
+//                    }
+//                }
+//            }
+//        }).start();
     }
 
     public AccessToken getAccessToken() {

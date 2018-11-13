@@ -1,5 +1,6 @@
 package com.fykj.wxDev;
 
+import com.fykj.wxDev.interfaces.WxMenuServer;
 import com.fykj.wxDev.util.RedisUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,13 +13,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class WxDevApplicationTests {
 
 	@Autowired
-	private RedisUtil redisUtil;
+	private WxMenuServer wxMenuServer;
 
 	@Test
 	public void contextLoads() {
-//		boolean set = redisUtil.set("gender", "男");
-		Object gender = redisUtil.get("age");
-		System.out.println(gender);
+		wxMenuServer.testMenuFun();
 	}
 
 }

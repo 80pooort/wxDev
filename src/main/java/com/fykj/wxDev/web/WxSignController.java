@@ -26,8 +26,8 @@ public class WxSignController {
     @Autowired
     private WxSignServer wxSignServer;
 
-    @RequestMapping(name = "wxSign", method = RequestMethod.GET)
-    public void wxDoor(HttpServletResponse response, HttpServletRequest request, WXBaseParams wxBaseParams) {
+    @RequestMapping(name = "wxPort", method = RequestMethod.GET)
+    public void wxSign(HttpServletResponse response, HttpServletRequest request, WXBaseParams wxBaseParams) {
         try {
             System.out.println("开始校验签名");
             //排序
@@ -48,8 +48,8 @@ public class WxSignController {
         }
     }
 
-    @RequestMapping(name = "wxSign", method = RequestMethod.POST)
-    public void wxDoor(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(name = "wxPort", method = RequestMethod.POST)
+    public void wxMsg(HttpServletRequest request, HttpServletResponse response) {
         PrintWriter out = null;
         String respXml = "";
         try {
