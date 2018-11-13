@@ -15,9 +15,19 @@ public class WxDevApplicationTests {
 	@Autowired
 	private WxMenuServer wxMenuServer;
 
+	@Autowired
+	private RedisUtil redisUtil;
+
 	@Test
 	public void contextLoads() {
 		wxMenuServer.testMenuFun();
+	}
+
+	@Test
+	public void testRedis(){
+		redisUtil.set("sex","{sex:男}");
+		redisUtil.set("sex","{sex:女}");
+		System.out.println((String) redisUtil.get("sex"));
 	}
 
 }
