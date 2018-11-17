@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class StartQuartzJob implements ApplicationRunner {
 
-    @Value("${jobSwitch.quartzJob}")
+    @Value("${jobSwitch.quartzJobTemplate}")
     private String quartzJobSwitch;
 
     @Override

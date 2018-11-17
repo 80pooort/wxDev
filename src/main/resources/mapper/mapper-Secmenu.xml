@@ -5,51 +5,10 @@
 	<id column="id" property="id" jdbcType="INTEGER" />
 	<result column="name" property="name" jdbcType="VARCHAR" />
 	<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+	<collection property="threeMenus" column="id" select="com.fykj.wxDev.dao.ThreeMenuDao.findAllThreeMenu"/>
 </resultMap>
-<sql id="Base_Column_List" >
-	id,
-	`name`,
-	parent_id
-</sql>
-<sql id="base_where" >
-	<where>
-		1=1
-		<if test="id != null">
-			and id = #{id}
-		</if>
-		<if test="name != null and name != ''">
-			and `name` = #{name}
-		</if>
-		<if test="parentId != null">
-			and parent_id = #{parentId}
-		</if>
-	</where>
-</sql>
-<select id="selectOne" resultMap="BaseResultMap" parameterType="map">
-	select		<include refid="Base_Column_List" />
-	from wx_sec_menu
-	<include refid="base_where"/>
-	 limit 1
-</select>
-
-<select id="select" resultMap="BaseResultMap" parameterType="map">
-	select		<include refid="Base_Column_List" />
-	from wx_sec_menu
-	<include refid="base_where"/>
-</select>
-
-<insert id="insert" parameterType="com.fykj.wxDev.pojo.Secmenu">
-	insert into wx_sec_menu
-	(
-	id,
-	`name`,
-	parent_id
-	)
-	values (
-	#{id},
-	#{name},
-	#{parentId}
-	)
-</insert>
+	<select id="findAllSecMenu" resultMap="BaseResultMap" parameterType="int">
+		select id,`name` from wx_sec_menu where parent_id = #{id};
+	</select>
 
 </mapper>

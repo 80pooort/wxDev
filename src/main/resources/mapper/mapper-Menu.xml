@@ -3,31 +3,11 @@
 <mapper namespace="com.fykj.wxDev.dao.MenuDao">
     <resultMap id="BaseResultMap" type="com.fykj.wxDev.pojo.Menu">
         <id column="id" property="id" jdbcType="INTEGER"/>
+        <collection property="secmenus" column="id" select="com.fykj.wxDev.dao.SecmenuDao.findAllSecMenu"/>
     </resultMap>
-    <sql id="Base_Column_List">
-	  id
-    </sql>
-    <sql id="base_where">
-        <where>
-            1=1
-            <if test="id != null">
-                and id = #{id}
-            </if>
-        </where>
-    </sql>
-    <select id="selectOne" resultMap="BaseResultMap" parameterType="map">
-        select
-        <include refid="Base_Column_List"/>
-        from wx_menu
-        <include refid="base_where"/>
-        limit 1
-    </select>
 
-    <select id="select" resultMap="BaseResultMap" parameterType="map">
-        select
-        <include refid="Base_Column_List"/>
-        from wx_menu
-        <include refid="base_where"/>
+    <select id="findMenuForWx" resultMap="BaseResultMap">
+      select * from wx_menu
     </select>
 
 </mapper>

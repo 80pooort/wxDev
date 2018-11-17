@@ -30,4 +30,13 @@ public class WxDevApplicationTests {
 		System.out.println((String) redisUtil.get("sex"));
 	}
 
+	@Test
+	public void test2(){
+		try {
+			wxMenuServer.createMenu();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }
