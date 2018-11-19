@@ -47,6 +47,9 @@ spring:
         min-idle: 0
     timeout: 1000
 
+  application:
+    name: wxDev
+
 mybatis:
   mapperLocations: classpath:mapper/mapper-*.xml
   typeAliasesPackage: com.fykj.wxDev.pojo
@@ -54,11 +57,23 @@ mybatis:
 
 wx:
   token: testUrl
-  appId:  wxf27c2fa67e51adaa
+  appId: wxf27c2fa67e51adaa
   appSecret: 5f7a214cae7a0967bf83f0859f4c164f
   accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s
-  menuUrl:  https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s
+  menuUrl: https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s
   autoTokenSwitch: 1
 
 jobSwitch:
   quartzJobTemplate: 0
+
+cookie:
+  domain: 127.0.0.1
+
+rocketmq:
+  groupName: ${spring.application.name}
+  namesrvAddr: 127.0.0.1:9876
+  producer:
+    default: false
+  consumer:
+
+
