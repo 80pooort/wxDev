@@ -1,18 +1,26 @@
 package com.fykj.wxDev.exception;
 
+import com.fykj.wxDev.enumPackage.SelfExceptionEnum;
+
 /**
  * @Author: wujian
  * @Date: 2018/11/4 22:50
  */
 public class SelfException extends Exception {
-    private String msg;
+    private String code;
 
-    public SelfException(String excMsg){
+    public SelfException(String code,String excMsg){
         super(excMsg);
-        this.msg = excMsg;
+        this.code = code;
     }
 
-    public String getMsg() {
-        return msg;
+    public SelfException(SelfExceptionEnum seEnum){
+        super(seEnum.getMsg());
+        this.code = seEnum.getCode();
     }
+
+    public String getCode() {
+        return code;
+    }
+
 }

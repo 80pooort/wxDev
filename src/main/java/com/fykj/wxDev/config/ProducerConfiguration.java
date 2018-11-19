@@ -19,26 +19,23 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties(ProducerProperties.class)
 @ConditionalOnProperty(prefix = ProducerProperties.PREFIX,value = "namesrvAddr")
-public class RocketmqAutoConfiguration {
-  private static final Logger logger = LoggerFactory.getLogger(RocketmqAutoConfiguration.class);
+public class ProducerConfiguration {
+  private static final Logger logger = LoggerFactory.getLogger(ProducerConfiguration.class);
 
   @Autowired
-  private ProducerProperties properties;
-
-  @Autowired
-  private ApplicationEventPublisher publisher;
-
-  private static boolean isFirstSub = true;
+  private ProducerProperties producerProperties;
 
   @Bean
   @ConditionalOnProperty(prefix = ProducerProperties.PREFIX,value = "default",havingValue = "true")
   public DefaultMQProducer defaultMQProducer() throws MQClientException {
-    logger.info();
-    DefaultMQProducer defaultMQProducer = new DefaultMQProducer(properties.getGroupName());
-    defaultMQProducer.setNamesrvAddr(properties.getNamesrvAddr());
+    logger.info(producerProperties.toString());
+    logger.info("defaultMQProducer 正在创建-----------------------");
+    DefaultMQProducer defaultMQProducer = new DefaultMQProducer(producerProperties.getGroupName());
+    defaultMQProducer.setNamesrvAddr(producerProperties.getNamesrvAddr());
     defaultMQProducer().setVipChannelEnabled(false);
     defaultMQProducer.setRetryTimesWhenSendAsyncFailed(10);
     defaultMQProducer.start();
+    logger.info("rocket mq server 启动成功-------------------------");
     return defaultMQProducer;
   }
 

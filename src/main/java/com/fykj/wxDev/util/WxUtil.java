@@ -1,21 +1,18 @@
 package com.fykj.wxDev.util;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.fykj.wxDev.vo.CommentMessage;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.XppDriver;
-import org.apache.commons.lang3.StringUtils;
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.net.ssl.*;
-import javax.servlet.http.HttpServletRequest;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.Writer;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -25,11 +22,28 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 public class WxUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(WxUtil.class);
 
+    /**
+     * 对所有的xml节点加上CDATA标记
+     */
     private static XStream xstream = new XStream(new XppDriver() {
         public HierarchicalStreamWriter createWriter(Writer out) {
             return new PrettyPrintWriter(out) {
@@ -71,7 +85,7 @@ public class WxUtil {
     }
 
     /**
-     * 加密
+     * 对字符串进行加密
      */
     public static String sha1(String str) {
         try {
@@ -197,13 +211,57 @@ public class WxUtil {
     }
 
     /**
-     * 将回复的消息转成xml格式
-     * @param message
+     * 将对象转成xml格式字符串
+     * @param t
      * @return
      */
-    public static String messageToXml(CommentMessage message) {
-        xstream.alias("xml", message.getClass());
-        return xstream.toXML(message);
+    public static<T> String messageToXml(T t) {
+        if (t == null) {
+            return "";
+        }
+        xstream.alias("xml", t.getClass());
+        return xstream.toXML(t);
+    }
+
+    /**
+     * 去掉json对象中某个节点
+     * @param t
+     * @param e
+     * @param <T>
+     */
+    public static<T>  void delJsonEle(T t,String e ){
+        if (t == null || StringUtils.isEmpty(e)) {
+            return;
+        }
+
+        boolean joFlag = t instanceof JSONObject;
+        boolean jaFlag = t instanceof JSONArray;
+        //控制递归结束,最后一个对象不是这两种类型
+        if (!joFlag && !jaFlag) {
+            System.out.println("不符合条件,该递归结束.");
+            return;
+        }
+        if (joFlag) {
+            JSONObject jsonObject = (JSONObject)t;
+            for (String index:jsonObject.keySet()) {
+                if (StringUtils.equals(e,index)) {
+                    jsonObject.remove(index);
+                    break;
+                }
+                delJsonEle(jsonObject.get(index),e);
+            }
+        }
+        if (jaFlag) {
+            //集合直接遍历清理
+            JSONArray jsonArray = (JSONArray)t;
+            if (CollectionUtils.isEmpty(jsonArray)) {
+                return;
+            }
+            for (Object obj: jsonArray) {
+                delJsonEle(obj,e);
+            }
+        }
+
     }
 
 }

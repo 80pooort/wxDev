@@ -1,5 +1,6 @@
 package com.fykj.wxDev.util;
 
+import com.fykj.wxDev.enumPackage.SelfExceptionEnum;
 import com.fykj.wxDev.exception.SelfException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -139,7 +140,7 @@ public class RedisUtil {
      */
     public long incr(String key, long delta) throws Exception{
         if (delta < 0) {
-            throw new SelfException("递增因子必须大于0");
+            throw new SelfException(SelfExceptionEnum.FACTOR);
         }
         return redisTemplate.opsForValue().increment(key, delta);
     }
@@ -152,7 +153,7 @@ public class RedisUtil {
      */
     public long decr(String key, long delta) throws Exception{
         if (delta < 0) {
-            throw new SelfException("递减因子必须大于0");
+            throw new SelfException(SelfExceptionEnum.DESFACTOR);
         }
         return redisTemplate.opsForValue().increment(key, -delta);
     }

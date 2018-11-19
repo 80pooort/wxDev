@@ -7,11 +7,15 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 
 /**
+ * order注解设置过滤器优先级别,数值小的优先级高
  * created by wujian on 2018/11/19 10:52
  */
-public class WebFilter implements Filter {
+@WebFilter(filterName = "OpenIdFilter",urlPatterns = "/*")
+//@Order(Ordered.HIGHEST_PRECEDENCE)
+public class OpenIdFilter implements Filter {
 
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
