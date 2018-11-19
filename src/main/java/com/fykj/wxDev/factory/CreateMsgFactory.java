@@ -20,7 +20,7 @@ public class CreateMsgFactory {
     //根据传入类型生产对应实例
     public CommentMessage createMsg(String typeName) throws Exception {
         if (StringUtils.isEmpty(typeName)) {
-            throw new SelfException(SelfExceptionEnum.INVALIDPARAM.name());
+            throw new SelfException(SelfExceptionEnum.INVALIDPARAM);
         }
 
         if (StringUtils.equals(MsgTypeEnum.TEXT.name(), typeName)) {

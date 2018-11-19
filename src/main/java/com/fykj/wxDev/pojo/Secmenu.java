@@ -7,7 +7,7 @@ public class Secmenu implements Serializable {
     private Integer id;
     private String name;
     private Integer parentId;
-    private List<ThreeMenu> threeMenus;
+    private List<ThreeMenu> sub_button;
 
     public Integer getId() {
         return id;
@@ -33,11 +33,11 @@ public class Secmenu implements Serializable {
         this.parentId = parentId;
     }
 
-    public List<ThreeMenu> getThreeMenus() {
-        return threeMenus;
+    public List<ThreeMenu> getSub_button() {
+        return sub_button;
     }
 
-    public void setThreeMenus(List<ThreeMenu> threeMenus) {
-        this.threeMenus = threeMenus;
+    public void setSub_button(List<ThreeMenu> sub_button) {
+        this.sub_button = sub_button;
     }
 }

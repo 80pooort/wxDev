@@ -3,7 +3,7 @@
 <mapper namespace="com.fykj.wxDev.dao.MenuDao">
     <resultMap id="BaseResultMap" type="com.fykj.wxDev.pojo.Menu">
         <id column="id" property="id" jdbcType="INTEGER"/>
-        <collection property="secmenus" column="id" select="com.fykj.wxDev.dao.SecmenuDao.findAllSecMenu"/>
+        <collection property="button" column="id" select="com.fykj.wxDev.dao.SecmenuDao.findAllSecMenu"/>
     </resultMap>
 
     <select id="findMenuForWx" resultMap="BaseResultMap">

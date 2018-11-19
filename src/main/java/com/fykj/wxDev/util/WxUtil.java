@@ -151,7 +151,7 @@ public class WxUtil {
             con.setDoInput(true); //允许输入流，即允许下载
 
             //在android中必须将此项设置为false
-            con.setDoOutput(false); //允许输出流，即允许上传
+            con.setDoOutput(true); //允许输出流，即允许上传
             con.setUseCaches(false); //不使用缓冲
             if (null != requestMethod && !requestMethod.equals("")) {
                 con.setRequestMethod(requestMethod); //使用指定的方式

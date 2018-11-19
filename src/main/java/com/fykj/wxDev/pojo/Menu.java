@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Menu implements Serializable {
     private Integer id;
-    private List<Secmenu> secmenus;
+    private List<Secmenu> button;
 
     public Integer getId() {
         return id;
@@ -15,11 +15,11 @@ public class Menu implements Serializable {
         this.id = id;
     }
 
-    public List<Secmenu> getSecmenus() {
-        return secmenus;
+    public List<Secmenu> getButton() {
+        return button;
     }
 
-    public void setSecmenus(List<Secmenu> secmenus) {
-        this.secmenus = secmenus;
+    public void setButton(List<Secmenu> button) {
+        this.button = button;
     }
 }

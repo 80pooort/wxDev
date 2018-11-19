@@ -48,7 +48,7 @@
 </select>
 
 	<select id="findAllThreeMenu" resultMap="BaseResultMap" parameterType="int">
-		select `name` from wx_three_menu where parent_id = #{id}
+		select `name`,`type`,`url` from wx_three_menu where parent_id = #{id}
 	</select>
 
 </mapper>

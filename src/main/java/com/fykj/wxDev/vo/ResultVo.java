@@ -11,8 +11,8 @@ import java.io.Serializable;
 public class ResultVo<T> implements Serializable {
     private static final long serialVersionUID = 8412493911097577364L;
     private boolean success;
-    private String code;
-    private String msg;
+    private String errcode;
+    private String errmsg;
     private T data;
 
     ResultVo(){}
@@ -23,15 +23,15 @@ public class ResultVo<T> implements Serializable {
 
     public static ResultVo createSuccess(String msg, Object data) {
         ResultVo resultVo = new ResultVo(true);
-        resultVo.setMsg(msg);
+        resultVo.setErrmsg(msg);
         resultVo.setData(data);
         return resultVo;
     }
 
     public static ResultVo createFalse(String code, String msg) {
         ResultVo resultVo = new ResultVo(false);
-        resultVo.setCode(code);
-        resultVo.setMsg(msg);
+        resultVo.setErrcode(code);
+        resultVo.setErrmsg(msg);
         return resultVo;
     }
 
@@ -43,20 +43,20 @@ public class ResultVo<T> implements Serializable {
         this.success = success;
     }
 
-    public String getCode() {
-        return code;
+    public String getErrcode() {
+        return errcode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setErrcode(String errcode) {
+        this.errcode = errcode;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getErrmsg() {
+        return errmsg;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setErrmsg(String errmsg) {
+        this.errmsg = errmsg;
     }
 
     public T getData() {
