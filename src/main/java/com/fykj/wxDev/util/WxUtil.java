@@ -2,17 +2,18 @@ package com.fykj.wxDev.util;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.fykj.wxDev.vo.CommentMessage;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.XppDriver;
+import java.beans.PropertyDescriptor;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -29,12 +30,14 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 public class WxUtil {
@@ -263,5 +266,31 @@ public class WxUtil {
         }
 
     }
+
+    /**
+     * 将bean转换成map
+     * @param t
+     * @param <T>
+     * @return
+     */
+    public static<T> Map transBean2Map(T t){
+        Assert.notNull(t,"参数对象为空错误");
+        HashMap<String,Object> resultMap = new HashMap<>(0);
+        try {
+            PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
+            PropertyDescriptor[] propertyDescriptors = propertyUtilsBean.getPropertyDescriptors(t);
+            Assert.notEmpty(propertyDescriptors,"对象成员属性数组为空");
+            for (PropertyDescriptor propertyDescriptor:propertyDescriptors) {
+                String name = propertyDescriptor.getName();
+                if (StringUtils.equals(name,"class")) {
+                    resultMap.put(name,propertyUtilsBean.getNestedProperty(t,name));
+                }
+            }
+        } catch (Exception e) {
+            logger.error("bean 转换成 map异常",e);
+        }
+        return resultMap;
+    }
+
 
 }

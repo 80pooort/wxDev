@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class StartQuartzJob implements ApplicationRunner {
 
     @Value("${jobSwitch.quartzJobTemplate}")
-    private String quartzJobSwitch;
+    private boolean quartzJobSwitch;
 
     @Override
     public void run(ApplicationArguments args){
@@ -26,7 +26,7 @@ public class StartQuartzJob implements ApplicationRunner {
             public void run() {
                 boolean flag = true;
                 while (flag){
-                    if (StringUtils.equals(Setting.TRUE_FLAG,quartzJobSwitch)) {
+                    if (quartzJobSwitch) {
                         QuartzManager.addJob("quartzJobTemplate", QuartzJobTemplate.class," 0 0/5 * * * ? ");
                     }
                     flag = false;
