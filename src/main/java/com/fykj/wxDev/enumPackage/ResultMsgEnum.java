@@ -7,7 +7,8 @@ package com.fykj.wxDev.enumPackage;
  */
 public enum ResultMsgEnum {
     SUCCESS("0","success"),
-    EMPTY("20001","微信接口无返回")
+    EMPTY("20001","微信接口无返回"),
+    OPENIDEMPTY("20002","用户openId为空")
     ;
 
     ResultMsgEnum(String errcode, String errmsg) {

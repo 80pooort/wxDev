@@ -12,7 +12,8 @@ logging:
     com.fykj: DEBUG
 
 fykj:
-  unfilterUrl: /login.ftl,/login/
+  unfilterUrl: /wx/
+  serviceUrl: https://127.0.0.1:8080
 
 spring:
   datasource:
@@ -79,6 +80,12 @@ mybatis:
   mapperLocations: classpath:mapper/mapper-*.xml
   typeAliasesPackage: com.fykj.wxDev.pojo
 
+pagehelper:
+  dialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params:
+    count: coutsql
 
 wx:
   token: testUrl
@@ -86,7 +93,10 @@ wx:
   appSecret: 5f7a214cae7a0967bf83f0859f4c164f
   accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s
   menuUrl: https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s
-  autoTokenSwitch: 1
+  connectOauthUrl: https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect
+  snsOauthUrl: https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code
+  snsUserInfoUrl: https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN
+  autoTokenSwitch: true
 
 jobSwitch:
   quartzJobTemplate: false

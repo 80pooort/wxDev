@@ -1,7 +1,9 @@
 package com.fykj.wxDev.filter;
 
 import com.fykj.wxDev.util.CookieUtil;
+import com.fykj.wxDev.vo.WXProperties;
 import java.io.IOException;
+import java.net.URLEncoder;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -28,10 +30,16 @@ public class OpenIdFilter implements Filter {
   @Value("${fykj.unfilterUrl}")
   private String unfilterUrl;
 
+  @Value("${fykj.serviceUrl}")
+  private String serviceUrl;
+
   @Autowired
   private CookieUtil cookieUtil;
 
   private String[] unFilterUrlArr;
+
+  @Autowired
+  private WXProperties wxProperties;
 
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
@@ -65,9 +73,10 @@ public class OpenIdFilter implements Filter {
     }
     if (StringUtils.isEmpty(openId)){
       //调接口获取用户openid
-    }
-    if (StringUtils.isEmpty(openId)) {
-      //跳转错误页面
+      String urlParam = URLEncoder.encode(serviceUrl + "/wx/getOpenId?currentUrl=" +servletRequest.getRequestURI(),"UTF-8");
+      String redirectUrl = String.format(wxProperties.getConnectOauthUrl(),wxProperties.getAppId(),urlParam);
+      servletResponse.sendRedirect(redirectUrl);
+      chain.doFilter(request,response);
       return;
     }
     //保存openid到cookie

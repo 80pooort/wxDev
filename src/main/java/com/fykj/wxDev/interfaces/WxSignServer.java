@@ -1,5 +1,6 @@
 package com.fykj.wxDev.interfaces;
 
+import com.fykj.wxDev.vo.ResultVo;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -7,5 +8,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Date: 2018/11/4 23:09
  */
 public interface WxSignServer {
-    public String processRequest(HttpServletRequest request) throws Exception;
+    String processRequest(HttpServletRequest request) throws Exception;
+    ResultVo getWXUserInfo(HttpServletRequest request) throws Exception;
+    String wxAccessToken() throws Exception;
 }

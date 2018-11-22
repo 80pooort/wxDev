@@ -27,19 +27,19 @@ public class FreshAccessToken implements ApplicationRunner {
     private String accessTokenUrl;
 
     @Value("${wx.autoTokenSwitch}")
-    private String autoTokenSwitch;
+    private boolean autoTokenSwitch;
 
     @Autowired
     private RedisUtil redisUtil;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args){
         new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
                     try {
-                        if (StringUtils.equals(Setting.TRUE_FLAG, autoTokenSwitch)) {
+                        if (autoTokenSwitch) {
                             //开关开启才去获取不然一直休眠
                             getAndSaveAccessToken();
                         }
@@ -52,13 +52,12 @@ public class FreshAccessToken implements ApplicationRunner {
                             Thread.sleep(1000 * 3);
                         }
                     } catch (Exception e) {
-                        System.out.println("发生异常：" + e.getMessage());
-                        e.printStackTrace();
+                        logger.error("获取token异常:",e);
                         try {
                             //发生异常休眠1秒
                             Thread.sleep(1000 * 10);
                         } catch (Exception e1) {
-
+                            logger.error("获取token线程休眠异常:",e);
                         }
                     }
                 }
@@ -69,7 +68,7 @@ public class FreshAccessToken implements ApplicationRunner {
     public void getAndSaveAccessToken() {
         String Url = String.format(accessTokenUrl, appId, appSecret);
         String result = WxUtil.getHttpsResponse(Url, "GET", null);
-        System.out.println("刷新获取到的access_token=" + result);
+        logger.info("刷新获取到的access_token={}",result);
         redisUtil.set(Setting.ACCESS_TOKEN, result);
     }
 }

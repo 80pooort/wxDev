@@ -1,5 +1,6 @@
 package com.fykj.wxDev.vo;
 
+import com.fykj.wxDev.enumPackage.ResultMsgEnum;
 import java.io.Serializable;
 
 /**
@@ -23,6 +24,7 @@ public class ResultVo<T> implements Serializable {
 
     public static ResultVo createSuccess(String msg, Object data) {
         ResultVo resultVo = new ResultVo(true);
+        resultVo.setErrcode("0");
         resultVo.setErrmsg(msg);
         resultVo.setData(data);
         return resultVo;
@@ -32,6 +34,13 @@ public class ResultVo<T> implements Serializable {
         ResultVo resultVo = new ResultVo(false);
         resultVo.setErrcode(code);
         resultVo.setErrmsg(msg);
+        return resultVo;
+    }
+
+    public static ResultVo createFalse(ResultMsgEnum rme){
+        ResultVo resultVo = new ResultVo(false);
+        resultVo.setErrcode(rme.getErrcode());
+        resultVo.setErrmsg(rme.getErrmsg());
         return resultVo;
     }
 
@@ -65,5 +74,13 @@ public class ResultVo<T> implements Serializable {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return "ResultVo{" +
+            "errcode='" + errcode + '\'' +
+            ", errmsg='" + errmsg + '\'' +
+            '}';
     }
 }
