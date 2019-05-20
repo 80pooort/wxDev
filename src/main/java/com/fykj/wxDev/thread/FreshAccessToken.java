@@ -34,31 +34,27 @@ public class FreshAccessToken implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
+        new Thread(() -> {
+            while (true) {
+                try {
+                    if (autoTokenSwitch) {
+                        //开关开启才去获取不然一直休眠
+                        getAndSaveAccessToken();
+                    }
+                    if (StringUtils.isNotBlank((String) redisUtil.get(Setting.ACCESS_TOKEN))) {
+                        //获取到access_token 休眠7000秒,大约2个小时左右
+                        Thread.sleep(7000 * 1000);
+                    } else {
+                        //获取的access_token为空 休眠3秒
+                        Thread.sleep(1000 * 3);
+                    }
+                } catch (Exception e) {
+                    logger.error("获取token异常:",e);
                     try {
-                        if (autoTokenSwitch) {
-                            //开关开启才去获取不然一直休眠
-                            getAndSaveAccessToken();
-                        }
-                        if (StringUtils.isNotBlank((String) redisUtil.get(Setting.ACCESS_TOKEN))) {
-                            //获取到access_token 休眠7000秒,大约2个小时左右
-                            Thread.sleep(7000 * 1000);
-//                            Thread.sleep(60 * 1000);
-                        } else {
-                            //获取的access_token为空 休眠3秒
-                            Thread.sleep(1000 * 3);
-                        }
-                    } catch (Exception e) {
-                        logger.error("获取token异常:",e);
-                        try {
-                            //发生异常休眠1秒
-                            Thread.sleep(1000 * 10);
-                        } catch (Exception e1) {
-                            logger.error("获取token线程休眠异常:",e);
-                        }
+                        //发生异常休眠1秒
+                        Thread.sleep(1000 * 10);
+                    } catch (Exception e1) {
+                        logger.error("获取token线程休眠异常:",e);
                     }
                 }
             }
