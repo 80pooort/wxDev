@@ -67,6 +67,7 @@ public class OpenIdFilter implements Filter {
     }
 
     String openId = "";
+
     openId = servletRequest.getParameter("open_id");
     if (StringUtils.isEmpty(openId)) {
       openId = cookieUtil.getCookie(servletRequest,CookieUtil.OPEN_ID_COOKIE);
@@ -80,7 +81,7 @@ public class OpenIdFilter implements Filter {
       return;
     }
     //保存openid到cookie
-    cookieUtil.setCookie(servletResponse,CookieUtil.OPEN_ID_COOKIE,openId,3*24*60*60);
+    cookieUtil.setCookie(servletResponse,CookieUtil.OPEN_ID_COOKIE,openId,-1);
     chain.doFilter(request,response);
   }
 

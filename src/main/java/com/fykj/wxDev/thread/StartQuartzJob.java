@@ -2,8 +2,6 @@ package com.fykj.wxDev.thread;
 
 import com.fykj.wxDev.job.QuartzJobTemplate;
 import com.fykj.wxDev.util.QuartzManager;
-import com.fykj.wxDev.vo.Setting;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -21,7 +19,16 @@ public class StartQuartzJob implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args){
-        new Thread(new Runnable() {
+        new Thread(() -> {
+            boolean flag = true;
+            while (flag){
+                if (quartzJobSwitch) {
+                    QuartzManager.addJob("quartzJobTemplate", QuartzJobTemplate.class," 0 0/5 * * * ? ");
+                }
+                flag = false;
+            }
+        }).start();
+       /* new Thread(new Runnable() {
             @Override
             public void run() {
                 boolean flag = true;
@@ -32,7 +39,7 @@ public class StartQuartzJob implements ApplicationRunner {
                     flag = false;
                 }
             }
-        }).start();
+        }).start();*/
     }
 
 }

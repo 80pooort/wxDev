@@ -30,13 +30,6 @@ public class ResultVo<T> implements Serializable {
         return resultVo;
     }
 
-    public static ResultVo createFalse(String code, String msg) {
-        ResultVo resultVo = new ResultVo(false);
-        resultVo.setErrcode(code);
-        resultVo.setErrmsg(msg);
-        return resultVo;
-    }
-
     public static ResultVo createFalse(ResultMsgEnum rme){
         ResultVo resultVo = new ResultVo(false);
         resultVo.setErrcode(rme.getErrcode());

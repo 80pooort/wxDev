@@ -1,14 +1,15 @@
 package com.fykj.wxDev.interfaces;
 
 import com.fykj.wxDev.vo.ResultVo;
-import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @Author: wujian
  * @Date: 2018/11/4 23:09
  */
 public interface WxSignServer {
-    String processRequest(HttpServletRequest request) throws Exception;
-    ResultVo getWXUserInfo(HttpServletRequest request) throws Exception;
+    String processRequest(Map<String,String> requestMap) throws Exception;
+    ResultVo getWXUserInfoByOpenId(String openId) throws Exception;
     String wxAccessToken() throws Exception;
+    void testMQ() throws Exception;
 }

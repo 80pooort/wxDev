@@ -7,21 +7,17 @@ import com.fykj.wxDev.dao.ThreeMenuDao;
 import com.fykj.wxDev.enumPackage.ResultMsgEnum;
 import com.fykj.wxDev.interfaces.WxMenuServer;
 import com.fykj.wxDev.pojo.Menu;
-import com.fykj.wxDev.pojo.ThreeMenu;
 import com.fykj.wxDev.util.RedisUtil;
 import com.fykj.wxDev.util.WxUtil;
 import com.fykj.wxDev.vo.AccessToken;
 import com.fykj.wxDev.vo.ResultVo;
 import com.fykj.wxDev.vo.Setting;
-import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
 
 /**
  * @Author: wujian
@@ -44,12 +40,6 @@ public class WxMenuServerImpl implements WxMenuServer {
     @Value("${wx.menuUrl}")
     private String menuUrl;
 
-    public void testMenuFun() {
-        HashMap<String, Object> params = Maps.newHashMap();
-        params.put("id",1);
-        ThreeMenu threeMenus = threeMenuDao.selectOne(params);
-        System.out.println(threeMenus);
-    }
 
     @Override
     public ResultVo createMenu() throws Exception {

@@ -9,7 +9,7 @@ import java.util.Collection;
 
 /**
  * 布隆过滤器
- * 可以用来做redis防穿透、黑名单、垃圾邮件等
+ * 可以用来做redis防穿透、黑名单、过滤垃圾邮件等
  * created by wujian on 2018/11/21 11:23
  */
 public class BloomFilter<E> implements Serializable {

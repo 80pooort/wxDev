@@ -16,8 +16,9 @@ import com.fykj.wxDev.vo.WXProperties;
 import com.fykj.wxDev.vo.WXUserInfo;
 import java.util.Date;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.common.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +41,13 @@ public class WxSignServerImpl implements WxSignServer {
     @Autowired
     private RedisUtil redisUtil;
 
+    @Autowired
+    private DefaultMQProducer defaultMQProducer;
+
     @Override
-    public String processRequest(HttpServletRequest request) throws Exception {
+    public String processRequest(Map<String,String> requestMap) throws Exception {
         String respXml = null;
         String respMsg = null;
-        // 调用parseXml方法解析请求消息
-        Map<String, String> requestMap = WxUtil.parseXml(request);
         // 发送方帐号
         String fromUserName = requestMap.get("FromUserName");
         // 开发者微信号
@@ -71,9 +73,7 @@ public class WxSignServerImpl implements WxSignServer {
      * @throws Exception
      */
     @Override
-    public ResultVo getWXUserInfo(HttpServletRequest request) throws Exception {
-        //从cookie中拿用户openId
-        String openId = cookieUtil.getCookie(request, CookieUtil.OPEN_ID_COOKIE);
+    public ResultVo getWXUserInfoByOpenId(String openId) throws Exception {
         if (StringUtils.isBlank(openId)) {
           return ResultVo.createFalse(ResultMsgEnum.OPENIDEMPTY);
         }
@@ -97,5 +97,11 @@ public class WxSignServerImpl implements WxSignServer {
         String tempStr = (String)redisUtil.get(Setting.ACCESS_TOKEN);
         AccessToken accessToken = JSONObject.parseObject(tempStr, AccessToken.class);
         return accessToken.getAccessToken();
+    }
+
+    @Override
+    public void testMQ() throws Exception {
+        Message msg = new Message("topictest","tag1","123456","你好,欢迎光临!".getBytes());
+        defaultMQProducer.send(msg);
     }
 }

@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -37,7 +36,6 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
@@ -150,12 +148,11 @@ public class WxUtil {
       });
 
       con.setDoInput(true); //允许输入流，即允许下载
-
-      //在android中必须将此项设置为false
       con.setDoOutput(true); //允许输出流，即允许上传
       con.setUseCaches(false); //不使用缓冲
+      
       if (StringUtils.isNotBlank(requestMethod)) {
-        con.setRequestMethod(requestMethod); //使用指定的方式
+        con.setRequestMethod(requestMethod.toUpperCase()); //使用指定的方式
       } else {
         con.setRequestMethod("GET"); //使用get请求
       }

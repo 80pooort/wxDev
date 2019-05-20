@@ -9,8 +9,16 @@ import com.fykj.wxDev.vo.ResultVo;
 import com.fykj.wxDev.vo.WXBaseParams;
 import com.fykj.wxDev.vo.WXProperties;
 import com.fykj.wxDev.vo.WXUserInfo;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -26,9 +34,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class WxSignController {
 
     private final Logger logger = LoggerFactory.getLogger(WxSignController.class);
-
-//    @Value("${wx.token}")
-//    private String wxToken;
 
     @Autowired
     private WXProperties wxProperties;
@@ -73,7 +78,9 @@ public class WxSignController {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
             out = response.getWriter();
-            respXml = wxSignServer.processRequest(request);
+            // 调用parseXml方法解析请求消息
+            Map<String, String> requestMap = WxUtil.parseXml(request);
+            respXml = wxSignServer.processRequest(requestMap);
         } catch (Exception e) {
             logger.error("响应用户信息异常", e);
         }
@@ -105,5 +112,34 @@ public class WxSignController {
         }
     }
 
+    public static void main(String[] args) {
+        File csv = new File("C:\\Users\\wujia\\Desktop\\cust.txt");  // CSV文件路径
+        BufferedReader br = null;
+        try
+        {
+            br = new BufferedReader(new FileReader(csv));
+        } catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        String line = "";
+        String everyLine = "";
+        try {
+            StringBuffer stringBuffer = new StringBuffer();
+            List<String> allString = new ArrayList<>();
+            while ((line = br.readLine()) != null)  //读取到的内容给line变量
+            {
+                everyLine = line;
+                System.out.println(everyLine);
+                allString.add(everyLine);
+                stringBuffer.append("\'").append(everyLine).append("\'").append(",");
+            }
+            System.out.println("csv表格中所有行数："+allString.size());
+            System.out.println(stringBuffer);
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
 
 }
