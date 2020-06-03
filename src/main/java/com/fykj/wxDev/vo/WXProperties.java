@@ -1,18 +1,18 @@
 package com.fykj.wxDev.vo;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * 微信相关属性封装类
  * created by wujian on 2018/11/22 9:54
  */
-@Setter
-@Getter
-@ConfigurationProperties(WXProperties.PREFIX)
+@Data
+@Component
+@ConfigurationProperties(prefix = "wx")
 public class WXProperties {
-  public static final String PREFIX = "wx";
+
 
   private String token;
   private String appId;

@@ -13,15 +13,16 @@ logging:
 
 fykj:
   unfilterUrl: /wx/
-  serviceUrl: https://127.0.0.1:8080
+  serviceUrl: https://jinyanmz.com
+  serviceDomain: jinyanmz.com
 
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/fykjtest?useUnicode=true&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://47.92.116.76:3306/fykj?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
-    password: 123
+    password: Wj200601_wzw_03
     initialSize: 5
     minIdle: 5
     maxIdle: 30
@@ -40,7 +41,7 @@ spring:
 
   redis:
     database: 0
-    host: 127.0.0.1
+    host: 47.92.116.76
     port: 6379
     password: 123456
     jedis:
@@ -102,11 +103,11 @@ jobSwitch:
   quartzJobTemplate: false
 
 cookie:
-  domain: 127.0.0.1
+  domain: ${fykj.serviceDomain}
 
 rocketmq:
   groupName: ${spring.application.name}
-  namesrvAddr: 127.0.0.1:9876
+  namesrvAddr: 47.92.116.76:9876
   producer:
     default: false
   consumer:
