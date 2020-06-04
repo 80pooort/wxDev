@@ -19,7 +19,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 public class TestConsumer extends ConsumerConfiguration implements ApplicationListener<ContextRefreshedEvent> {
   private static final Logger logger = LoggerFactory.getLogger(TestConsumer.class);
 
-  private final String TOPIC = "t_topictest";
+  private final String TOPIC = "topictest2";
 
   private final String TAGS = "tag1";
 

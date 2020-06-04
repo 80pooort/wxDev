@@ -3,6 +3,7 @@ package com.fykj.wxDev;
 import com.fykj.wxDev.interfaces.WxMenuServer;
 import com.fykj.wxDev.interfaces.WxSignServer;
 import com.fykj.wxDev.util.RedisUtil;
+import com.fykj.wxDev.vo.WXProperties;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,6 +29,9 @@ public class WxDevApplicationTests {
 
 	@Autowired
 	private WxSignServer wxSignServer;
+
+	@Autowired
+	private WXProperties wxProperties;
 
 	@Test
 	public void testRedis(){

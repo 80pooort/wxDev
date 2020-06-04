@@ -110,6 +110,7 @@ rocketmq:
   namesrvAddr: 47.92.116.76:9876
   producer:
     default: false
+    tag: tag1
   consumer:
 
 

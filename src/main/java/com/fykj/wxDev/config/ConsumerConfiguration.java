@@ -1,6 +1,7 @@
 package com.fykj.wxDev.config;
 
 import com.fykj.wxDev.vo.ConsumerProperties;
+import com.fykj.wxDev.vo.RocketMQProperties;
 import java.util.List;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
@@ -20,21 +21,22 @@ import org.springframework.context.annotation.Configuration;
  * created by wujian on 2018/11/19 16:24
  */
 @Configuration
-@EnableConfigurationProperties(ConsumerProperties.class)
-@ConditionalOnProperty(prefix = ConsumerProperties.PREFIX,value = "namesrvAddr")
+@EnableConfigurationProperties(RocketMQProperties.class)
+@ConditionalOnProperty(prefix = RocketMQProperties.PREFIX,value = "namesrvAddr")
 public abstract class ConsumerConfiguration {
   private static final Logger logger = LoggerFactory.getLogger(ConsumerConfiguration.class);
 
   @Autowired
-  private ConsumerProperties consumerProperties;
+  private RocketMQProperties rocketMQProperties;
 
   //初始化监听器,开启消费类
   public void listener(String topic,String tag) throws MQClientException {
     logger.info(String.format("开启%s:%s消费者",topic,tag));
-    logger.info(consumerProperties.toString());
+    logger.info(rocketMQProperties.toString());
     DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(
-        consumerProperties.getGroupName());
-    consumer.setNamesrvAddr(consumerProperties.getNamesrvAddr());
+        rocketMQProperties.getGroupName());
+    consumer.setNamesrvAddr(rocketMQProperties.getNamesrvAddr());
+    consumer.setVipChannelEnabled(false);
     consumer.subscribe(topic,tag);
     //内部类的方式,提供抽象方法给不同消费者实现业务逻辑
     consumer.registerMessageListener(new MessageListenerConcurrently() {

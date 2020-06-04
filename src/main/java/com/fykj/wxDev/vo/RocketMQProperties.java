@@ -1,17 +1,16 @@
 package com.fykj.wxDev.vo;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * 属性文件父类
  * created by wujian on 2018/11/19 15:26
  */
-@Setter
-@Getter
-@ToString
+@Data
+@Component
 @ConfigurationProperties(prefix = RocketMQProperties.PREFIX)
 public class RocketMQProperties {
   public static final String PREFIX = "rocketmq";
@@ -22,5 +21,10 @@ public class RocketMQProperties {
   //生产者组名
   private String groupName;
 
+  @Autowired
+  private ProducerProperties producerProperties;
+
+  @Autowired
+  private ConsumerProperties consumerProperties;
 
 }

@@ -41,8 +41,8 @@ public class WxSignServerImpl implements WxSignServer {
     @Autowired
     private RedisUtil redisUtil;
 
-//    @Autowired
-//    private DefaultMQProducer defaultMQProducer;
+    @Autowired
+    private DefaultMQProducer defaultMQProducer;
 
     @Override
     public String processRequest(Map<String,String> requestMap) throws Exception {
@@ -101,7 +101,7 @@ public class WxSignServerImpl implements WxSignServer {
 
     @Override
     public void testMQ() throws Exception {
-//        Message msg = new Message("topictest","tag1","123456","你好,欢迎光临!".getBytes());
-//        defaultMQProducer.send(msg);
+        Message msg = new Message("topictest2","tag1","123456","你好,欢迎光临!".getBytes());
+        defaultMQProducer.send(msg);
     }
 }
