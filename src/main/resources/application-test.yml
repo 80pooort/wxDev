@@ -1,0 +1,116 @@
+server:
+  port: 8080
+
+logging:
+  config: classpath:logback/logback-test.xml
+
+  pattern:
+    console: '%d %-5level %logger{32} - %msg%n'
+
+  level:
+    org.springframwork.web: INFO
+    com.fykj: DEBUG
+
+fykj:
+  unfilterUrl: /wx/
+  serviceUrl: https://jinyanmz.com
+  serviceDomain: jinyanmz.com
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://47.92.116.76:3306/fykj?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: Wj200601_wzw_03
+    initialSize: 5
+    minIdle: 5
+    maxIdle: 30
+    maxActive: 30
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat,wall
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    plugins: [com.org.platform.filter.SchemaInterceptor]
+
+  redis:
+    database: 0
+    host: 47.92.116.76
+    port: 6379
+    password: 123456
+    jedis:
+      pool:
+        max-active: 200
+        max-idle: 10
+        max-wait: -1ms
+        min-idle: 0
+    timeout: 1000ms
+
+  freemarker:
+    template-loader-path: classpath:/templates/
+    request-context-attribute: request
+    suffix: .ftl
+    charset: UTF-8
+    cache: false
+
+  resources:
+    staticLocations: classpath:/fystatic/
+    chain:
+      cache: false
+      strategy:
+        content:
+          enabled: true
+          paths: /**
+        fixed:
+          enabled: true
+          paths: /js/**,/css/**
+          version: 20181120
+    cache:
+      period: 1s
+
+  application:
+    name: wxDev
+
+mybatis:
+  mapperLocations: classpath:mapper/mapper-*.xml
+  typeAliasesPackage: com.fykj.wxDev.pojo
+
+pagehelper:
+  dialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params:
+    count: coutsql
+
+wx:
+  token: testUrl
+  appId: wxf27c2fa67e51adaa
+  appSecret: 5f7a214cae7a0967bf83f0859f4c164f
+  accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s
+  menuUrl: https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s
+  connectOauthUrl: https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect
+  snsOauthUrl: https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code
+  snsUserInfoUrl: https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN
+  autoTokenSwitch: true
+
+jobSwitch:
+  quartzJobTemplate: false
+
+cookie:
+  domain: ${fykj.serviceDomain}
+
+rocketmq:
+  groupName: ${spring.application.name}
+  namesrvAddr: 47.92.116.76:9876
+  producer:
+    default: false
+    tag: tag1
+  consumer:
+
+
