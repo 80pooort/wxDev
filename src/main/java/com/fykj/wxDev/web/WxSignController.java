@@ -44,7 +44,7 @@ public class WxSignController {
     @Autowired
     private WxMenuServer wxMenuServer;
 
-    @RequestMapping(name = "/wxPort", method = RequestMethod.GET)
+    @RequestMapping(value = "/wxPort", method = RequestMethod.GET)
     public void wxSign(HttpServletResponse response, HttpServletRequest request, WXBaseParams wxBaseParams) {
         try {
             logger.info("开始校验签名--------------");
@@ -70,7 +70,7 @@ public class WxSignController {
         }
     }
 
-    @RequestMapping(name = "/wxPort", method = RequestMethod.POST)
+    @RequestMapping(value = "/wxPort", method = RequestMethod.POST)
     public void wxMsg(HttpServletRequest request, HttpServletResponse response) {
         PrintWriter out = null;
         String respXml = "";
