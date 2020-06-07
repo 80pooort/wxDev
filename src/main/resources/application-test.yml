@@ -90,8 +90,8 @@ pagehelper:
 
 wx:
   token: testUrl
-  appId: wxeaa7198327fa3e40
-  appSecret: df42d7da7b1b24fe4631ad42767ff753
+  appId: wxdeb97301dd9f6cc3
+  appSecret: 76e011ada41c833e44b1cbe85b7bb3c5
   accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s
   menuUrl: https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s
   connectOauthUrl: https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect
