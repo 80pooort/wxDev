@@ -56,12 +56,12 @@ public class WxSignController {
             if (!StringUtils.isEmpty(mySignature) && StringUtils.equals(mySignature,wxBaseParams.getSignature())) {
                 logger.info("签名校验通过------------------");
                 response.getWriter().write(wxBaseParams.getEchostr());
-                ResultVo menuResult = wxMenuServer.createMenu();
-                if (StringUtils.equals("0",menuResult.getErrcode()) && StringUtils.equals("success",menuResult.getErrmsg())) {
-                    logger.info("wx菜单创建成功---------------");
-                }else{
-                    logger.info("wx菜单创建失败---reason:{}",menuResult.toString());
-                }
+//                ResultVo menuResult = wxMenuServer.createMenu();
+//                if (StringUtils.equals("0",menuResult.getErrcode()) && StringUtils.equals("success",menuResult.getErrmsg())) {
+//                    logger.info("wx菜单创建成功---------------");
+//                }else{
+//                    logger.info("wx菜单创建失败---reason:{}",menuResult.toString());
+//                }
             } else {
                logger.info("签名校验失败------------");
             }
